@@ -18,6 +18,7 @@ export type Denuncias = {
     anonimo:boolean;
     usuario_id: number | null;
     departamento_id: number;
+    prioridade?: number; // campo calculado automaticamente pelo backend (quanto maior, maior prioridade)
 }
 
 export type Departamento = {

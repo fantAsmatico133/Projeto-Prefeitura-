@@ -8,6 +8,7 @@ export const denunciaRouter = express.Router();
 const denunciaController= new DenunciaController();
 
 denunciaRouter.get("/", denunciaController.getDenuncia);
+denunciaRouter.get("/anonimas", denunciaController.getDenunciasAnonimas);
 
 //denunciaRouter.post("/", denunciaController.postDenuncia);
 
