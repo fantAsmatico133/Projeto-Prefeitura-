@@ -43,4 +43,14 @@ export class DenunciaBusiness {
         const all = await this.pegarDenuncias();
         return all.sort((a, b) => (b.prioridade || 0) - (a.prioridade || 0));
     }
+
+    // retorna denúncias sem expor quem denunciou (anonimizadas)
+    public async pegarDenunciasAnonimas(): Promise<Partial<Denuncias>[]> {
+        const all = await this.pegarDenuncias();
+        // remover campos identificadores como usuario_id
+        return all.map(({ usuario_id, ...rest }: any) => {
+            // também, se houver outros campos sensíveis, remova aqui
+            return rest as Partial<Denuncias>;
+        });
+    }
 }
