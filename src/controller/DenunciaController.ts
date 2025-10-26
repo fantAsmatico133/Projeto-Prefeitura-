@@ -16,4 +16,13 @@ export class DenunciaController{
             res.status(500).send({error: error.message});
         }
      }
+
+     public getDenunciasAnonimas = async (req: Request, res: Response) => {
+        try{
+            const anonimas = await this.denunciaBusiness.pegarDenunciasAnonimas();
+            res.status(200).send(anonimas);
+        }catch(error:any){
+            res.status(500).send({error: error.message});
+        }
+     }
 }

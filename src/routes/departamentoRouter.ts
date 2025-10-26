@@ -1,10 +1,9 @@
 import express from "express";
-import { UserController } from "../controller/UserController";
-
-
+import { DepartamentoController } from "../controller/DepartamentoController";
 
 export const departamentoRouter = express.Router();
 
-const userController = new UserController();
+const departamentoController = new DepartamentoController();
 
-departamentoRouter.get("/", userController.getAllUsers);
+// retorna fila de prioridade do departamento (maior prioridade primeiro)
+departamentoRouter.get("/fila", departamentoController.getFilaPrioridade);
