@@ -1,20 +1,20 @@
 import { connection } from "../dbConnection";
-import { PapelUsuario, User } from "../types/types";
+import { TipoUsuario, User } from "../types/types";
 export class UserData {
 
     async pegarUsuarios() {
         try {
-            const users = await connection('users').select();
+            const users = await connection('usuarios').select();
             return users;
         } catch (error: any) {
             throw new Error(error.sqlMessage || error.message);
         }
     }
 
-    async criarUsuarioNoBancoDeDados(name: string, email: string, password: string, papel: PapelUsuario):Promise<number>{
+    async criarUsuarioNoBancoDeDados(nome: string, email: string, senha: string, tipo: TipoUsuario):Promise<number>{
         try {
-            const user = await connection('users')
-                .insert([{ name: name, email: email, password: password, papel: papel }],['id']);
+            const user = await connection('usuarios')
+                .insert([{ nome: nome, email: email, senha: senha, tipo: tipo }],['id']);
             const novoId:number = user[0].id;
             return novoId;
         } catch (error: any) {
@@ -24,7 +24,7 @@ export class UserData {
 
     async pegarUsuarioPeloEmailNoBD(userEmail: string) {
         try {
-            const userE: User = await connection('users').where({ email: userEmail }).first();
+            const userE: User = await connection('usuarios').where({ email: userEmail }).first();
             return userE;
         } catch (error: any) {
             throw new Error(error.sqlMessage || error.message);

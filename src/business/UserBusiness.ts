@@ -1,5 +1,5 @@
 import  { UserData } from "../data/UserData";
-import { PapelUsuario, User } from "../types/types";
+import { TipoUsuario, User } from "../types/types";
 import bcrypt from "bcryptjs";
 import jsonwebtoken from "jsonwebtoken";
 
@@ -16,15 +16,15 @@ export class Userbusiness{
         }
     }
 
-    public async postarNovoUsuario(name: string, email: string, password: string){
+    public async postarNovoUsuario(nome: string, email: string, senha: string){
         try{
             const emailVinculado = await this.userData.pegarUsuarioPeloEmailNoBD(email);
             if(emailVinculado){
                 throw new Error("Email já vinculado em um usuário");
             }else{
-                const passwordhash = await bcrypt.hash(password, 10);
-                const papel: PapelUsuario = 'cidadao'
-                const newUser = await this.userData.criarUsuarioNoBancoDeDados(name,email,passwordhash,papel);
+                const senhaHash = await bcrypt.hash(senha, 10);
+                const tipo: TipoUsuario = 'cidadao'
+                const newUser = await this.userData.criarUsuarioNoBancoDeDados(nome,email,senhaHash,tipo);
                 return newUser;
             }
         }catch{
@@ -32,16 +32,16 @@ export class Userbusiness{
         }
     }
 
-    public async login(email: string, password: string){
+    public async login(email: string, senha: string){
         try{
             const emailVinculado = await this.userData.pegarUsuarioPeloEmailNoBD(email);
             if(emailVinculado){
-                const senhaValida = await bcrypt.compare(password, emailVinculado.password)
+                const senhaValida = await bcrypt.compare(senha, emailVinculado.senha)
                 if(senhaValida){
                     
                     const payload = {
                         id: emailVinculado.id,
-                        papel: emailVinculado.papel
+                        papel: emailVinculado.tipo
                     }
 
                     const chaveSecreta = process.env.JWT_KEY as string;

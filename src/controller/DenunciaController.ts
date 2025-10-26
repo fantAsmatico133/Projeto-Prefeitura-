@@ -1,10 +1,6 @@
 import { Response, Request } from "express";
 import { DenunciaBusiness } from "../business/DenunciaBusiness";
 
-
-
-
-
 export class DenunciaController{
      denunciaBusiness =  new DenunciaBusiness();
 

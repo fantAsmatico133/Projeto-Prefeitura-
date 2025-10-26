@@ -1,12 +1,12 @@
-export type PapelUsuario = 'cidadao' | 'funcionario';
+export type TipoUsuario = 'cidadao' | 'funcionario';
 export type StatusDenuncia = 'Pendente'| 'Em análise'| 'Resolvido';
 
 export type User = {
     id: Number;
-    name: string;
+    nome: string;
     email: string;
-    password: string;
-    papel: PapelUsuario
+    senha: string;
+    tipo: TipoUsuario
 };
 
 export type Denuncias = {

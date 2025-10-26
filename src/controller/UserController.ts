@@ -17,11 +17,11 @@ export class UserController{
 
      register = async (req: Request, res:Response)=>{
         try{
-            const {name,email,password} = req.body;
-            if(!name || !email || !password){
+            const {nome,email,password: senha} = req.body;
+            if(!nome || !email || !senha){
                 return res.status(400).send({error: "Um dos campos não foi inserido!"})
             }
-            const newUser = await this.userBusiness.postarNovoUsuario(name,email,password);
+            const newUser = await this.userBusiness.postarNovoUsuario(nome,email,senha);
             res.status(201).send(newUser);
         }catch(error: any ){
             if(error.message === "Email já vinculado em um usuário"){
@@ -34,11 +34,11 @@ export class UserController{
 
     login = async (req: Request, res:Response)=>{
         try{
-            const {email,password} = req.body;
-            if(!email || !password){
+            const {email,senha} = req.body;
+            if(!email || !senha){
                 return res.status(400).send({error: "Um dos campos não foi inserido!"})
             }
-            const token = await this.userBusiness.login(email,password);
+            const token = await this.userBusiness.login(email,senha);
             res.status(200).send(token);
         }catch(error: any ){
             if(error.message === "Email não existe"){
