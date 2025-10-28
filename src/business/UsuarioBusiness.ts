@@ -1,21 +1,21 @@
-import  { UserData } from "../data/UserData";
+import  { UsuarioData } from "../data/UsuarioData";
 import { TipoUsuario, User } from "../types/types";
 import bcrypt from "bcryptjs";
 import jsonwebtoken from "jsonwebtoken";
 
 
-export class Userbusiness{
-    userData = new UserData();
+export class Usuariobusiness{
+    usuarioData = new UsuarioData();
 
     public async postarNovoUsuario(nome: string, email: string, senha: string){
         try{
-            const emailVinculado = await this.userData.pegarUsuarioPeloEmailNoBD(email);
+            const emailVinculado = await this.usuarioData.pegarUsuarioPeloEmailNoBD(email);
             if(emailVinculado){
                 throw new Error("Email já vinculado em um usuário");
             }else{
                 const senhaHash = await bcrypt.hash(senha, 10);
                 const tipo: TipoUsuario = 'cidadao'
-                const newUser = await this.userData.criarUsuarioNoBancoDeDados(nome,email,senhaHash,tipo);
+                const newUser = await this.usuarioData.criarUsuarioNoBancoDeDados(nome,email,senhaHash,tipo);
                 return newUser;
             }
         }catch(error:any){
@@ -25,7 +25,7 @@ export class Userbusiness{
 
     public async login(email: string, senha: string){
         try{
-            const emailVinculado = await this.userData.pegarUsuarioPeloEmailNoBD(email);
+            const emailVinculado = await this.usuarioData.pegarUsuarioPeloEmailNoBD(email);
             if(emailVinculado){
                 const senhaValida = await bcrypt.compare(senha, emailVinculado.senha)
                 if(senhaValida){

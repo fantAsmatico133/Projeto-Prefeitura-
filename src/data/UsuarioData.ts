@@ -1,6 +1,6 @@
 import { connection } from "../dbConnection";
 import { TipoUsuario, User } from "../types/types";
-export class UserData {
+export class UsuarioData {
 
     async pegarUsuarios() {
         try {
