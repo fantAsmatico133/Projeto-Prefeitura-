@@ -11,10 +11,10 @@ export class UsuarioData {
         }
     }
 
-    async criarUsuarioNoBancoDeDados(nome: string, email: string, senha: string, tipo: TipoUsuario):Promise<number>{
+    async criarUsuarioNoBancoDeDados(nome: string, email: string, senha_hash: string, tipo: TipoUsuario):Promise<Number>{
         try {
             const user = await connection('usuarios')
-                .insert([{ nome: nome, email: email, senha: senha, tipo: tipo }],['id']);
+                .insert([{ nome: nome, email: email, senha_hash: senha_hash, papel: tipo }],['id']);
             const novoId:number = user[0].id;
             return novoId;
         } catch (error: any) {

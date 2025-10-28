@@ -8,7 +8,7 @@ export class UsuarioController{
 
     register = async (req: Request, res:Response)=>{
         try{
-            const {nome,email,senha: senha} = req.body;
+            const {nome,email,senha} = req.body;
             if(!nome || !email || !senha){
                 return res.status(400).send({error: "Um dos campos não foi inserido!"})
             }else{
@@ -35,7 +35,7 @@ export class UsuarioController{
             res.status(200).send(token);
         }catch(error: any ){
             if(error.message.includes('Email não existe! Por favor crie uma nova conta.')){
-                res.status(409).send(error.message);
+                res.status(404).send(error.message);
             }else if(error.message.includes('Senha inválida!')){
                 res.status(401).send(error.message);
             }
@@ -49,7 +49,7 @@ export class UsuarioController{
         try{
             const userPayload = (req as any).usuario
             if(!userPayload){
-                return res.status(404).send({error: "Payload não existe!"});
+                return res.status(500).send({error: "Payload não existe!"});
             }
             res.status(200).send(userPayload);
         }catch(error:any){

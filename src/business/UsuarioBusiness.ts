@@ -27,12 +27,12 @@ export class Usuariobusiness{
         try{
             const emailVinculado = await this.usuarioData.pegarUsuarioPeloEmailNoBD(email);
             if(emailVinculado){
-                const senhaValida = await bcrypt.compare(senha, emailVinculado.senha)
+                const senhaValida = await bcrypt.compare(senha, emailVinculado.senha_hash)
                 if(senhaValida){
                     
                     const payload = {
                         id: emailVinculado.id,
-                        papel: emailVinculado.tipo
+                        papel: emailVinculado.papel
                     }
 
                     const chaveSecreta = process.env.JWT_KEY as string;

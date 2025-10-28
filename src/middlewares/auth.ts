@@ -19,7 +19,7 @@ export const checkLogin = (req: Request, res : Response, next:NextFunction)=>{
            next();
 
         }catch(error:any){
-            res.status(401).send({error:"Token inv´slido ou expirado"});
+            res.status(401).send({error:"Token inválido ou expirado"});
         }
      }
 export const checkAdmin = (req: Request, res : Response, next:NextFunction)=>{
