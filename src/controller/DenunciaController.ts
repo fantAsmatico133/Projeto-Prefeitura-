@@ -21,4 +21,15 @@ export class DenunciaController{
             res.status(500).send({error: error.message});
         }
      }
+
+
+  // Retorna fila de denúncias ordenada por prioridade (maior primeiro)
+  public getFilaPrioridade = async (req: Request, res: Response) => {
+    try {
+      const fila = await this.denunciaBusiness.pegarDenunciasOrdenadasPorPrioridade();
+      res.status(200).send(fila);
+    } catch (error: any) {
+      res.status(500).send({ error: error.message });
+    }
+  };
 }

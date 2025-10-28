@@ -9,15 +9,8 @@ const denunciaController= new DenunciaController();
 
 denunciaRouter.get("/", denunciaController.getDenuncia);
 denunciaRouter.get("/anonimas", denunciaController.getDenunciasAnonimas);
+// retorna fila de prioridade do departamento (maior prioridade primeiro)
+denunciaRouter.get("/fila", denunciaController.getFilaPrioridade);
 
-//denunciaRouter.post("/", denunciaController.postDenuncia);
-
-//denunciaRouter.push("/", denunciaController.pushDenuncia);
-
-//denunciaRouter.patch("/:id/status", denunciaController.patchDenuncia);
-
-//denunciaRouter.delete("/:id", denunciaController.patchDenuncia);
-
-// Criar denúncia
 
 

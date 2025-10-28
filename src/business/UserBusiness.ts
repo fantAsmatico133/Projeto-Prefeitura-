@@ -7,15 +7,6 @@ import jsonwebtoken from "jsonwebtoken";
 export class Userbusiness{
     userData = new UserData();
 
-    public async pegarUsuarios():Promise<User[]>{
-        try {
-            const users = await this.userData.pegarUsuarios();
-                return users;
-        } catch (error:any) {
-                throw new Error("Usuários nao encontrados!");
-        }
-    }
-
     public async postarNovoUsuario(nome: string, email: string, senha: string){
         try{
             const emailVinculado = await this.userData.pegarUsuarioPeloEmailNoBD(email);
@@ -27,8 +18,8 @@ export class Userbusiness{
                 const newUser = await this.userData.criarUsuarioNoBancoDeDados(nome,email,senhaHash,tipo);
                 return newUser;
             }
-        }catch{
-           throw new Error("Erro inesperado"); 
+        }catch(error:any){
+           throw new Error(error.message || "Erro inesperado"); 
         }
     }
 
@@ -56,7 +47,7 @@ export class Userbusiness{
                 throw new Error('Email não existe! Por favor crie uma nova conta.');
             }
         }catch(error:any){
-            throw new Error('Erro inesperado');
+            throw new Error(error.message || 'Erro inesperado');
         }
     }
 }
