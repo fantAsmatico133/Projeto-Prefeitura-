@@ -31,4 +31,18 @@ export class UsuarioData {
         }
     }
 
+    // DENTRO DO ARQUIVO: src/data/UsuarioData.ts
+// Adicione esta função junto com as outras
+
+    async pegarUsuarioPeloIdNoBD(userId: Number): Promise<User | undefined> {
+        try {
+            // (Usei 'usuarios' para corresponder ao nome da sua tabela no MySQL)
+            const user: User = await connection('usuarios') 
+                .where({ id: userId })
+                .first();
+            return user;
+        } catch (error: any) {
+            throw new Error(error.sqlMessage || error.message);
+        }
+    }
 }
