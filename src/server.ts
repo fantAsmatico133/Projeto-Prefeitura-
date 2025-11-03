@@ -1,21 +1,16 @@
-import express from "express";
-import cors from "cors";
-import denunciasRoutes from "./routes/denuncias";
-import usuariosRoutes from "./routes/usuario";
-import departamentosRoutes from "./routes/departamento";
+import { app } from "./app";
+import {denunciaRouter} from "./routes/denunciasRouter";
+import {usuarioRouter} from "./routes/usuarioRouter";
+import dotenv from "dotenv";
 
-const app = express();
-app.use(cors());
-app.use(express.json());
+dotenv.config();
 
-app.use("/denuncias", denunciasRoutes);
-app.use("/usuarios", usuariosRoutes);
-app.use("/departamentos", departamentosRoutes);
+app.use("/denuncias", denunciaRouter);
+app.use("/usuarios", usuarioRouter);
 
-app.get("/", (req, res) => {
-  res.send("API Prefeitura+ está rodando 🚀");
+const PORT = process.env.PORT || 3003;
+
+app.listen(PORT, ()=>{
+    console.log(`API rodando na porta ${PORT}`);
 });
 
-app.listen(3000, () => {
-  console.log("Servidor rodando em http://localhost:3000");
-});
