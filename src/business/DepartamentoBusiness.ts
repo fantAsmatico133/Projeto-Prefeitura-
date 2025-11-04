@@ -1,15 +1,11 @@
 
-
 import { DepartamentoData } from "../data/DepartamentoData";
 import { UsuarioData } from "../data/UsuarioData"; 
 import { Departamento } from "../types/types";
-
 export class DepartamentoBusiness { 
 
     departamentoData = new DepartamentoData();
     usuarioData = new UsuarioData(); 
-
-    
     public async pegarDepartamentos(): Promise<Departamento[]> {
         try {
             const departamentos = await this.departamentoData.pegarDepartamentos();
@@ -18,8 +14,6 @@ export class DepartamentoBusiness {
             throw new Error(error.message || "Erro inesperado ao buscar departamentos");
         }
     }
-
-    
     public async pegarDepartamentoPorId(id: Number): Promise<Departamento> {
         try {
             
@@ -39,8 +33,6 @@ export class DepartamentoBusiness {
             throw new Error(error.message || "Erro inesperado ao buscar departamento");
         }
     }
-
-    
     public async criarDepartamento(nome: string, endereco: string, horario_funcionamento: string, gerente_id:Number): Promise<Number> {
         try {
             

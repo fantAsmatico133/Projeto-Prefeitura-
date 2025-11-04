@@ -1,8 +1,5 @@
-
-
 import { Response, Request } from "express";
 import { DepartamentoBusiness } from "../business/DepartamentoBusiness";
-
 export class DepartamentoController {
     departamentoBusiness = new DepartamentoBusiness();
 
@@ -15,8 +12,6 @@ export class DepartamentoController {
             res.status(500).send(error.message || "Erro inesperado");
         }
     }
-
-    
     public pegarDepartamentoPorId = async (req: Request, res: Response) => {
         try {
             const id = Number(req.params.id);
@@ -41,8 +36,6 @@ export class DepartamentoController {
             }
         }
     }
-
-    
     public criarDepartamento = async (req: Request, res: Response) => {
         try {
         
