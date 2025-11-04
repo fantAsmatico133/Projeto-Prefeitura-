@@ -1,8 +1,25 @@
 import { DenunciaData } from "../data/DenunciaData";
-import { Denuncias } from "../types/types";
+import { Denuncia } from "../types/types";
+
+type EstatisticasDenuncias = {
+    total_denuncias: number;
+    denuncias_por_status: { status: string; contagem: number }[];
+    denuncias_por_departamento: { nome_departamento: string; contagem: number }[];
+};
 
 export class DenunciaBusiness {
     denunciaData = new DenunciaData();
+    // Estatísticas agregadas para dashboard
+    public async pegarEstatisticas(): Promise<EstatisticasDenuncias> {
+        const total = await this.denunciaData.contarTotalDenuncias();
+        const porStatus = await this.denunciaData.contarPorStatus();
+        const porDepartamento = await this.denunciaData.contarPorDepartamento();
+        return {
+            total_denuncias: Number(total),
+            denuncias_por_status: porStatus.map((r: any) => ({ status: r.status, contagem: Number(r.contagem) })),
+            denuncias_por_departamento: porDepartamento.map((r: any) => ({ nome_departamento: r.nome_departamento, contagem: Number(r.contagem) }))
+        };
+    }
 
     // calcula prioridade a partir do título/descrição
     private calcularPrioridade(denuncia: any): number {
@@ -22,14 +39,14 @@ export class DenunciaBusiness {
         return 1;
     }
 
-    public async pegarDenuncias(): Promise<Denuncias[]> {
+    public async pegarDenuncias(): Promise<Denuncia[]> {
         try {
             const denuncias = await this.denunciaData.pegarDenuncias();
 
             // enriquecer com prioridade calculada
             const enriched = denuncias.map((d: any) => {
                 const prioridade = this.calcularPrioridade(d);
-                return { ...d, prioridade } as Denuncias;
+                return { ...d, prioridade } as Denuncia;
             });
 
             return enriched;
@@ -39,18 +56,18 @@ export class DenunciaBusiness {
     }
 
     // retorna lista ordenada por prioridade (maior prioridade primeiro)
-    public async pegarDenunciasOrdenadasPorPrioridade(): Promise<Denuncias[]> {
+    public async pegarDenunciasOrdenadasPorPrioridade(): Promise<Denuncia[]> {
         const all = await this.pegarDenuncias();
-        return all.sort((a, b) => (b.prioridade || 0) - (a.prioridade || 0));
+        return all.sort((a: Denuncia, b: Denuncia) => Number(b.prioridade || 0) - Number(a.prioridade || 0));
     }
 
     // retorna denúncias sem expor quem denunciou (anonimizadas)
-    public async pegarDenunciasAnonimas(): Promise<Partial<Denuncias>[]> {
+    public async pegarDenunciasAnonimas(): Promise<Partial<Denuncia>[]> {
         const all = await this.pegarDenuncias();
         // remover campos identificadores como usuario_id
         return all.map(({ usuario_id, ...rest }: any) => {
             // também, se houver outros campos sensíveis, remova aqui
-            return rest as Partial<Denuncias>;
+            return rest as Partial<Denuncia>;
         });
     }
 }

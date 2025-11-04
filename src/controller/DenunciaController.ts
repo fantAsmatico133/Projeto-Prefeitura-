@@ -3,6 +3,14 @@ import { DenunciaBusiness } from "../business/DenunciaBusiness";
 
 export class DenunciaController{
      denunciaBusiness =  new DenunciaBusiness();
+   public getEstatisticas = async (req: Request, res: Response) => {
+    try {
+      const stats = await this.denunciaBusiness.pegarEstatisticas();
+      res.status(200).send(stats);
+    } catch (error: any) {
+      res.status(500).send({ error: error.message });
+    }
+   }
 
      public getDenuncia = async (req: Request, res: Response)=>{
         try{
