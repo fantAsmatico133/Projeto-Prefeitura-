@@ -32,5 +32,19 @@ export class TipoDenunciaData {
         }
     }
 
+    async criarTipoDenuncia(nome: string, departamento_id: Number): Promise<Number> {
+    try {
+        const criarTipoDenuncia = await connection('tipo_denuncia')
+            .insert({
+                nome: nome,
+                departamento_id: departamento_id
+            });
 
+        const novoId = criarTipoDenuncia[0];
+        
+        return novoId;
+    } catch (error: any) {
+        throw new Error(error.sqlMessage || error.message);
+    }
+}
 }

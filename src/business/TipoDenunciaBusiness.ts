@@ -26,4 +26,35 @@ export class TipoDenunciaBusiness{
         }
         
     }
+
+    async criarTipoDenuncia(nome: string, departamento_id: Number): Promise<Number> {
+        try {
+            
+            if (!nome) {
+                throw new Error("O nome do tipo de denúncia é obrigatório.");
+            }
+
+            
+            const tiposExistentes: Tipo_Denuncia[] = await this.TipoDenunciaData.pegarTiposDenuncia();
+
+            const duplicado = tiposExistentes.find((tipoNoBanco) => {
+                
+                const nomeTipoDenuncia = tipoNoBanco.nome.toLowerCase().split(" ")[0];
+                const reqNome = nome.toLowerCase().split(" ")[0];
+                
+                return nomeTipoDenuncia === reqNome;
+            });
+            
+            if (duplicado) {
+                throw new Error("Tipo Denúncia já existente com esse nome!");
+            }
+            
+            const novoId = await this.TipoDenunciaData.criarTipoDenuncia(nome, departamento_id);
+            
+            return novoId; 
+
+        } catch(error:any){
+            throw new Error(error.message || 'Erro inesperado ao criar o tipo denuncia!');
+        }
+    }
 }
