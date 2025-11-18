@@ -34,4 +34,26 @@ export class DenunciaData {
         return result;
     }
 
+    async criarDenuncia(denuncia: any) {
+        try {
+            const inserted = await connection('denuncias').insert([
+                {
+                    titulo: denuncia.titulo,
+                    descricao: denuncia.descricao,
+                    endereco_denuncia: denuncia.endereco_denuncia,
+                    status: denuncia.status || 'Pendente',
+                    anonimo: denuncia.anonimo === true,
+                    usuario_id: denuncia.usuario_id || null,
+                    tipo_denuncia_id: denuncia.tipo_denuncia_id
+                }
+            ], ['id']);
+
+            // some DBs return array of ids, some return array of objects with id
+            const id = (inserted[0] && (inserted[0].id || inserted[0])) || inserted;
+            return id;
+        } catch (error: any) {
+            throw new Error(error.sqlMessage || error.message);
+        }
+    }
+
 }

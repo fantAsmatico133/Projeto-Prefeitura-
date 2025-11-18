@@ -70,4 +70,43 @@ export class DenunciaBusiness {
             return rest as Partial<Denuncia>;
         });
     }
+
+    // cria denúncia com lógica condicional de usuário (aceita anônimas)
+    public async criarDenuncia(denunciaInput: any, usuarioIdFromToken?: number | null) {
+        try {
+            let usuario_id: number | null = null;
+            let anonimo = false;
+
+            if (usuarioIdFromToken && Number(usuarioIdFromToken) > 0) {
+                if (denunciaInput.anonimo === true) {
+                    usuario_id = null;
+                    anonimo = true;
+                } else {
+                    usuario_id = Number(usuarioIdFromToken);
+                    anonimo = false;
+                }
+            } else {
+                usuario_id = null;
+                anonimo = true;
+            }
+
+            const toInsert = {
+                titulo: denunciaInput.titulo,
+                descricao: denunciaInput.descricao,
+                endereco_denuncia: denunciaInput.endereco_denuncia,
+                tipo_denuncia_id: denunciaInput.tipo_denuncia_id,
+                status: denunciaInput.status || 'Pendente',
+                anonimo,
+                usuario_id
+            };
+
+            const newId = await this.denunciaData.criarDenuncia(toInsert);
+
+            const prioridade = this.calcularPrioridade(toInsert as any);
+
+            return { id: newId, ...toInsert, prioridade };
+        } catch (error: any) {
+            throw new Error(error.message || 'Erro ao criar denúncia');
+        }
+    }
 }

@@ -1,5 +1,6 @@
 import { Response, Request } from "express";
 import { DenunciaBusiness } from "../business/DenunciaBusiness";
+import jsonwebtoken from 'jsonwebtoken';
 
 export class DenunciaController{
      denunciaBusiness =  new DenunciaBusiness();
@@ -39,5 +40,37 @@ export class DenunciaController{
     } catch (error: any) {
       res.status(500).send({ error: error.message });
     }
+  ;
+
+  public postDenuncia = async (req: Request, res: Response) => {
+    try {
+      const { titulo, descricao, endereco_denuncia, tipo_denuncia_id, anonimo } = req.body;
+
+      if (!titulo || !descricao || !endereco_denuncia || !tipo_denuncia_id) {
+        return res.status(400).send({ error: 'Campos obrigatórios ausentes: titulo, descricao, endereco_denuncia, tipo_denuncia_id' });
+      }
+
+      let usuarioId: number | null = null;
+      const authHeader = req.headers.authorization as string | undefined;
+      if (authHeader) {
+        const parts = authHeader.split(' ');
+        if (parts.length === 2) {
+          const token = parts[1];
+          try {
+            const chave = process.env.JWT_KEY as string;
+            const payload: any = jsonwebtoken.verify(token, chave);
+            if (payload && payload.id) usuarioId = Number(payload.id);
+          } catch (err) {
+            usuarioId = null;
+          }
+        }
+      }
+
+      const created = await this.denunciaBusiness.criarDenuncia({ titulo, descricao, endereco_denuncia, tipo_denuncia_id, anonimo }, usuarioId);
+      res.status(201).send(created);
+    } catch (error: any) {
+      res.status(500).send({ error: error.message });
+    }
+  };
   };
 }

@@ -13,6 +13,7 @@ denunciaRouter.get("/estatisticas", checkLogin, checkAdmin, denunciaController.g
 denunciaRouter.get("/anonimas", denunciaController.getDenunciasAnonimas);
 // retorna fila de prioridade do departamento (maior prioridade primeiro)
 denunciaRouter.get("/fila", denunciaController.getFilaPrioridade);
+denunciaRouter.post("/", denunciaController.postDenuncia);
 
 
 
