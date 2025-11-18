@@ -13,5 +13,24 @@ export class TipoDenunciaController{
             
         }
     }
+
+    public pegarTipoDenunciaPorId = async (req: Request, res: Response) => {
+        try{
+            const id = Number(req.params.id);
+            if(isNaN(id)){
+                res.status(400).send({message: "O id fornecido não um número válido"})
+            }else{
+                const pegarTipoDenunciaPorId: Tipo_Denuncia[] = await this.tipoDenunciaBusiness.pegarTipoDenunciaPorId(id);
+                res.status(200).send(pegarTipoDenunciaPorId);
+            }
+        }catch(error: any){
+            if(error.message.includes('Denúncia não encontrada')){
+                res.status(404).send(error.message);
+            }else{
+                console.log("tradução errada");
+                res.status(500).send(error.message);
+            }
+        }
+    }
 }
 
