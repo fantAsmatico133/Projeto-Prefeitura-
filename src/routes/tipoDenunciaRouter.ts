@@ -7,3 +7,4 @@ const tipoDenunciaController = new TipoDenunciaController;
 
 tipoDenunciaRouter.get("/", tipoDenunciaController.pegarTipoDenuncia);
 
+tipoDenunciaRouter.get("/:id", tipoDenunciaController.pegarTipoDenunciaPorId);
