@@ -48,9 +48,18 @@ export class DenunciaData {
                 }
             ], ['id']);
 
-            // some DBs return array of ids, some return array of objects with id
+            
             const id = (inserted[0] && (inserted[0].id || inserted[0])) || inserted;
             return id;
+        } catch (error: any) {
+            throw new Error(error.sqlMessage || error.message);
+        }
+    }
+
+    async pegarDenunciaPorId(id: number) {
+        try {
+            const denuncia = await connection('denuncias').where({ id }).first();
+            return denuncia;
         } catch (error: any) {
             throw new Error(error.sqlMessage || error.message);
         }

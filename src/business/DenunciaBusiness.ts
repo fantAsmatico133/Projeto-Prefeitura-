@@ -1,5 +1,6 @@
 import { DenunciaData } from "../data/DenunciaData";
 import { Denuncia } from "../types/types";
+import { ConfirmacaoData } from "../data/ConfirmacaoData";
 
 type EstatisticasDenuncias = {
     total_denuncias: number;
@@ -9,6 +10,7 @@ type EstatisticasDenuncias = {
 
 export class DenunciaBusiness {
     denunciaData = new DenunciaData();
+    confirmacaoData = new ConfirmacaoData();
     // Estatísticas agregadas para dashboard
     public async pegarEstatisticas(): Promise<EstatisticasDenuncias> {
         const total = await this.denunciaData.contarTotalDenuncias();
@@ -69,6 +71,30 @@ export class DenunciaBusiness {
             // também, se houver outros campos sensíveis, remova aqui
             return rest as Partial<Denuncia>;
         });
+    }
+
+    // Confirma uma denúncia por um usuário autenticado
+    public async confirmarDenuncia(usuarioId: number, denunciaId: number) {
+        try {
+            // valida existência da denúncia
+            const denuncia = await this.denunciaData.pegarDenunciaPorId(denunciaId);
+            if (!denuncia) {
+                throw new Error('Denúncia não encontrada');
+            }
+
+            // verifica se usuário já confirmou
+            const jaConfirmou = await this.confirmacaoData.existeConfirmacao(usuarioId, denunciaId);
+            if (jaConfirmou) {
+                throw new Error('Usuário já confirmou esta denúncia');
+            }
+
+            const newId = await this.confirmacaoData.criarConfirmacao(usuarioId, denunciaId);
+            const totalConfirmacoes = await this.confirmacaoData.contarConfirmacoesPorDenuncia(denunciaId);
+
+            return { id: newId, denuncia_id: denunciaId, usuario_id: usuarioId, total_confirmacoes: Number(totalConfirmacoes) };
+        } catch (error: any) {
+            throw new Error(error.message || 'Erro ao confirmar denúncia');
+        }
     }
 
     // cria denúncia com lógica condicional de usuário (aceita anônimas)
