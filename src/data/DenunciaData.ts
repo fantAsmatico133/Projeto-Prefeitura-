@@ -1,4 +1,5 @@
 import { connection } from "../dbConnection";
+import { Denuncia, StatusDenuncia } from "../types/types";
 
 export class DenunciaData {
     async pegarDenuncias() {
@@ -9,5 +10,4 @@ export class DenunciaData {
             throw new Error(error.sqlMessage || error.message);
         }
     }
-
 }
