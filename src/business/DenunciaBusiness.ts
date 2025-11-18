@@ -1,6 +1,8 @@
 import { DenunciaData } from "../data/DenunciaData";
 import { Denuncia } from "../types/types";
 import { ConfirmacaoData } from "../data/ConfirmacaoData";
+import { ComentarioData } from "../data/ComentarioData";
+import { UsuarioData } from "../data/UsuarioData";
 
 type EstatisticasDenuncias = {
     total_denuncias: number;
@@ -11,6 +13,8 @@ type EstatisticasDenuncias = {
 export class DenunciaBusiness {
     denunciaData = new DenunciaData();
     confirmacaoData = new ConfirmacaoData();
+    comentarioData = new ComentarioData();
+    usuarioData = new UsuarioData();
     // Estatísticas agregadas para dashboard
     public async pegarEstatisticas(): Promise<EstatisticasDenuncias> {
         const total = await this.denunciaData.contarTotalDenuncias();
@@ -94,6 +98,40 @@ export class DenunciaBusiness {
             return { id: newId, denuncia_id: denunciaId, usuario_id: usuarioId, total_confirmacoes: Number(totalConfirmacoes) };
         } catch (error: any) {
             throw new Error(error.message || 'Erro ao confirmar denúncia');
+        }
+    }
+
+    // Adiciona comentário por usuário autenticado na denúncia
+    public async comentarDenuncia(usuarioId: number, denunciaId: number, texto: string) {
+        try {
+            if (!texto || texto.trim().length === 0) {
+                throw new Error('Texto do comentário é obrigatório');
+            }
+
+            const denuncia = await this.denunciaData.pegarDenunciaPorId(denunciaId);
+            if (!denuncia) {
+                throw new Error('Denúncia não encontrada');
+            }
+
+            const usuario = await this.usuarioData.pegarUsuarioPeloIdNoBD(usuarioId);
+            if (!usuario) {
+                throw new Error('Usuário não encontrado');
+            }
+
+            const tipo_usuario = usuario.papel;
+
+            const newId = await this.comentarioData.criarComentario(texto, usuarioId, denunciaId, tipo_usuario);
+
+            return {
+                id: newId,
+                texto,
+                usuario_id: usuarioId,
+                denuncia_id: denunciaId,
+                tipo_usuario,
+                data: new Date()
+            };
+        } catch (error: any) {
+            throw new Error(error.message || 'Erro ao adicionar comentário');
         }
     }
 

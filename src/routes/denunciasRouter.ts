@@ -16,6 +16,8 @@ denunciaRouter.get("/fila", denunciaController.getFilaPrioridade);
 denunciaRouter.post("/", denunciaController.postDenuncia);
 // Confirmar denúncia (usuário autenticado)
 denunciaRouter.post("/:id/confirmar", checkLogin, denunciaController.confirmarDenuncia);
+// Postar comentário em denúncia (usuário autenticado)
+denunciaRouter.post("/:id/comentarios", checkLogin, denunciaController.postarComentario);
 
 
 

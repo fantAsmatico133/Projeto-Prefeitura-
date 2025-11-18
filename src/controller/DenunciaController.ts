@@ -14,6 +14,35 @@ export class DenunciaController {
     }
   };
 
+  // Postar comentário em uma denúncia (usuário autenticado)
+  public postarComentario = async (req: Request, res: Response) => {
+    try {
+      const usuarioPayload = (req as any).usuario;
+      if (!usuarioPayload || !usuarioPayload.id) {
+        return res.status(401).send({ error: 'Usuário não autenticado' });
+      }
+
+      const usuarioId = Number(usuarioPayload.id);
+      const denunciaId = Number(req.params.id);
+      const { texto } = req.body;
+
+      if (!denunciaId || isNaN(denunciaId)) {
+        return res.status(400).send({ error: 'Id de denúncia inválido' });
+      }
+      if (!texto || String(texto).trim().length === 0) {
+        return res.status(400).send({ error: 'Texto do comentário é obrigatório' });
+      }
+
+      const result = await this.denunciaBusiness.comentarDenuncia(usuarioId, denunciaId, String(texto));
+      res.status(201).send(result);
+    } catch (error: any) {
+      if (error.message && error.message.includes('não encontrada')) {
+        return res.status(404).send({ error: error.message });
+      }
+      res.status(500).send({ error: error.message });
+    }
+  };
+
   public getDenuncia = async (req: Request, res: Response) => {
     try {
       const users = await this.denunciaBusiness.pegarDenuncias();
