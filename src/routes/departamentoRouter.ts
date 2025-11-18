@@ -10,8 +10,22 @@ departamentoRouter.get("/", departamentoController.pegarDepartamentos);
 
 departamentoRouter.get("/:id", departamentoController.pegarDepartamentoPorId);
 
+departamentoRouter.get("/nome/:nome", departamentoController.pegarDepartamentoPorNome);
+
 departamentoRouter.post("/",
-    authMiddleware.checkLogin,      
-    authMiddleware.checkAdmin,      
+    authMiddleware.checkLogin,
+    authMiddleware.checkAdmin,
     departamentoController.criarDepartamento
+);
+
+departamentoRouter.put("/:id",
+    authMiddleware.checkLogin,
+    authMiddleware.checkAdmin,
+    departamentoController.atualizarDepartamento
+);
+
+departamentoRouter.delete("/:id",
+    authMiddleware.checkLogin,
+    authMiddleware.checkAdmin,
+    departamentoController.deletarDepartamento
 );
