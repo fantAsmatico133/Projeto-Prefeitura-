@@ -15,3 +15,10 @@ tipoDenunciaRouter.post("/",
     authMiddleware.checkAdmin,
     tipoDenunciaController.criarTipoDenuncia);
 
+tipoDenunciaRouter.put(
+    "/:id", 
+    authMiddleware.checkLogin, 
+    authMiddleware.checkAdmin, 
+    tipoDenunciaController.atualizarTipoDenuncia
+);
+

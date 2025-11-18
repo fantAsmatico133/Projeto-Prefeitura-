@@ -57,4 +57,27 @@ export class TipoDenunciaBusiness{
             throw new Error(error.message || 'Erro inesperado ao criar o tipo denuncia!');
         }
     }
+
+    async atualizarTipoDenuncia(id: number, nome: string, departamento_id: number): Promise<void> {
+        try {
+            if (isNaN(id)) {
+                throw new Error("ID inválido");
+            }
+            if (!nome || !departamento_id) {
+                throw new Error("Nome e ID do departamento são obrigatórios para atualização");
+            }
+
+            const existe = await this.TipoDenunciaData.TiposDenunciaPorId(id);
+            if (!existe) {
+                throw new Error("Tipo de denúncia não encontrado");
+            }
+
+            await this.TipoDenunciaData.atualizarTipoDenuncia(id, nome, departamento_id);
+
+        } catch (error: any) {
+            throw new Error(error.message || "Erro ao atualizar tipo de denúncia");
+        }
+    }
+
+    
 }

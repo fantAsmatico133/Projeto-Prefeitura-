@@ -23,28 +23,41 @@ export class TipoDenunciaData {
     }
 
     async TiposDenunciaPorId(id: Number): Promise<Tipo_Denuncia[]> {
-        try{
+        try {
             const tipos = await connection('tipo_denuncia')
-            .where({id: id});
+                .where({ id: id });
             return tipos;
-        }catch(error: any){
+        } catch (error: any) {
             throw new Error(error.sqlMessage || error.message);
         }
     }
 
     async criarTipoDenuncia(nome: string, departamento_id: Number): Promise<Number> {
-    try {
-        const criarTipoDenuncia = await connection('tipo_denuncia')
-            .insert({
-                nome: nome,
-                departamento_id: departamento_id
-            });
+        try {
+            const criarTipoDenuncia = await connection('tipo_denuncia')
+                .insert({
+                    nome: nome,
+                    departamento_id: departamento_id
+                });
 
-        const novoId = criarTipoDenuncia[0];
-        
-        return novoId;
-    } catch (error: any) {
-        throw new Error(error.sqlMessage || error.message);
+            const novoId = criarTipoDenuncia[0];
+
+            return novoId;
+        } catch (error: any) {
+            throw new Error(error.sqlMessage || error.message);
+        }
     }
-}
+
+    async atualizarTipoDenuncia(id: number, nome: string, departamento_id: number): Promise<void> {
+        try {
+            await connection('tipo_denuncia')
+                .where({ id: id })
+                .update({
+                    nome: nome,
+                    departamento_id: departamento_id
+                });
+        } catch (error: any) {
+            throw new Error(error.sqlMessage || error.message);
+        }
+    }
 }
