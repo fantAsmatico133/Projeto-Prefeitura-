@@ -103,7 +103,7 @@ export class DepartamentoBusiness {
             if (!deptoExiste) {
                 throw new Error("Departamento não encontrado");
             }
-            const tiposVinculados = await this.tipoDenunciaData.pegarTiposDenunciaId(id);
+            const tiposVinculados = await this.tipoDenunciaData.TiposDenunciaPorId(id);
             if (tiposVinculados && tiposVinculados.length > 0) {
                 throw new Error("Não é possível deletar. Este departamento está sendo usado por Tipos de Denúncia.");
             }
