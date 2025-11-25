@@ -2,16 +2,6 @@ import { connection } from "../dbConnection";
 import { Tipo_Denuncia } from "../types/types";
 
 export class TipoDenunciaData {
-    /*async pegarTiposDenunciaId(departamento_id: Number): Promise<Tipo_Denuncia[]> {
-        try {
-            const tipos = await connection('tipo_denuncia')
-                .where({ departamento_id: departamento_id });
-            return tipos;
-        } catch (error: any) {
-            throw new Error(error.sqlMessage || error.message);
-        }
-    }*/
-
     async pegarTiposDenuncia(): Promise<Tipo_Denuncia[]> {
         try {
             const tipos = await connection('tipo_denuncia')
@@ -22,7 +12,7 @@ export class TipoDenunciaData {
         }
     }
 
-    async TiposDenunciaPorId(id: Number): Promise<Tipo_Denuncia[]> {
+    async TiposDenunciaPorId(id: number): Promise<Tipo_Denuncia[]> {
         try {
             const tipos = await connection('tipo_denuncia')
                 .where({ id: id });
@@ -32,7 +22,7 @@ export class TipoDenunciaData {
         }
     }
 
-    async criarTipoDenuncia(nome: string, departamento_id: Number): Promise<Number> {
+    async criarTipoDenuncia(nome: string, departamento_id: number): Promise<number> {
         try {
             const criarTipoDenuncia = await connection('tipo_denuncia')
                 .insert({

@@ -2,7 +2,13 @@ import { TipoDenunciaData } from "../data/TipoDenunciaData";
 import { Tipo_Denuncia } from "../types/types";
 
 export class TipoDenunciaBusiness{
-   TipoDenunciaData = new TipoDenunciaData
+
+    private TipoDenunciaData: TipoDenunciaData;
+
+    constructor(tipoDenuncaData?: TipoDenunciaData){
+        this.TipoDenunciaData = tipoDenuncaData || new TipoDenunciaData();
+    }
+   
     async pegarTipoDenuncia():Promise<Tipo_Denuncia[]>{
         try{
             const tipoDenuncia: Tipo_Denuncia[] = await this.TipoDenunciaData.pegarTiposDenuncia();
@@ -12,11 +18,10 @@ export class TipoDenunciaBusiness{
         }
     }
 
-    async pegarTipoDenunciaPorId(id: Number):Promise<Tipo_Denuncia[]>{
+    async pegarTipoDenunciaPorId(id: number):Promise<Tipo_Denuncia[]>{
         try{
             const tipoDenuncia: Tipo_Denuncia[] = await this.TipoDenunciaData.TiposDenunciaPorId(id);
-            if(tipoDenuncia.length == 0){
-                console.log('esta caindo aqui')
+            if(tipoDenuncia.length === 0){
                 throw new Error('Denúncia não encontrada');
             }else{
                 return tipoDenuncia;
@@ -27,7 +32,7 @@ export class TipoDenunciaBusiness{
         
     }
 
-    async criarTipoDenuncia(nome: string, departamento_id: Number): Promise<Number> {
+    async criarTipoDenuncia(nome: string, departamento_id: number): Promise<number> {
         try {
             
             if (!nome) {
@@ -49,7 +54,7 @@ export class TipoDenunciaBusiness{
                 throw new Error("Tipo Denúncia já existente com esse nome!");
             }
             
-            const novoId = await this.TipoDenunciaData.criarTipoDenuncia(nome, departamento_id);
+            const novoId = Number(await this.TipoDenunciaData.criarTipoDenuncia(nome, departamento_id));
             
             return novoId; 
 
