@@ -31,6 +31,14 @@ export class UsuarioDataMock {
                 senha_hash: "hash_falso_do_banco",
                 papel: "cidadao"
             };
+        }else if (userId === 2) {
+            return {
+                id: 2,
+                nome: "Cidadão Teste",
+                email: "cidadao@teste.com",
+                senha_hash: "hash",
+                papel: "funcionario" 
+            };
         }
         return undefined;
     }

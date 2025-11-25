@@ -15,13 +15,11 @@ export class TipoDenunciaDataMock {
 
     public async deletarTipoDenuncia(id: number): Promise<void> {}
 
-    public async TiposDenunciaPorId(id: number): Promise<Tipo_Denuncia | undefined> {
-        if(id === 1){
-            return { id: 1, nome: "Iluminação", departamento_id: 1 };
-        }else{
-            return undefined;
-        }
-        
+    public async TiposDenunciaPorId(departamentoId: number): Promise<any> {
+    if (departamentoId === 1) {
+        return [{ id: 1, nome: "Poste", departamento_id: 1 }];
     }
+    return undefined; 
+}
 
 }

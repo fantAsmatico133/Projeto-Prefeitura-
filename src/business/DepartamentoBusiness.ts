@@ -5,9 +5,20 @@ import { Departamento } from "../types/types";
 
 export class DepartamentoBusiness {
 
-    departamentoData = new DepartamentoData();
-    usuarioData = new UsuarioData();
-    tipoDenunciaData = new TipoDenunciaData();
+    private departamentoData: DepartamentoData;
+    private usuarioData: UsuarioData;
+    private tipoDenunciaData: TipoDenunciaData;
+
+    
+    constructor(
+        departamentoData?: DepartamentoData,
+        usuarioData?: UsuarioData,
+        tipoDenunciaData?: TipoDenunciaData
+    ) {
+        this.departamentoData = departamentoData || new DepartamentoData();
+        this.usuarioData = usuarioData || new UsuarioData();
+        this.tipoDenunciaData = tipoDenunciaData || new TipoDenunciaData();
+    }
 
     public async pegarDepartamentos(): Promise<Departamento[]> {
         try {
