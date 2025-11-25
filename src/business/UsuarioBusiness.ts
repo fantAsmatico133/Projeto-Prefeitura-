@@ -4,8 +4,13 @@ import bcrypt from "bcryptjs";
 import jsonwebtoken from "jsonwebtoken";
 
 
-export class Usuariobusiness{
-    usuarioData = new UsuarioData();
+export class UsuarioBusiness{
+
+    private usuarioData: UsuarioData;
+    
+        constructor(usuarioData?: UsuarioData){
+            this.usuarioData = usuarioData || new UsuarioData();
+        }
 
     public async postarNovoUsuario(nome: string, email: string, senha: string){
         try{
