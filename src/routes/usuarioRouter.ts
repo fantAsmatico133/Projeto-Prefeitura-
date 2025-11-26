@@ -1,5 +1,5 @@
 import express from "express";
-import { UsuarioController } from "../controller/UserController";
+import { UsuarioController } from "../controller/UsuarioController";
 import * as authMiddleware from '../middlewares/auth';
 
 
