@@ -11,10 +11,22 @@ type EstatisticasDenuncias = {
 };
 
 export class DenunciaBusiness {
-    denunciaData = new DenunciaData();
-    confirmacaoData = new ConfirmacaoData();
-    comentarioData = new ComentarioData();
-    usuarioData = new UsuarioData();
+    private denunciaData: DenunciaData;
+    private confirmacaoData: ConfirmacaoData;
+    private comentarioData: ComentarioData;
+    private usuarioData: UsuarioData;
+
+    constructor(
+        denunciaData?: DenunciaData,
+        confirmacaoData?: ConfirmacaoData,
+        comentarioData?: ComentarioData,
+        usuarioData?: UsuarioData
+    ) {
+        this.denunciaData = denunciaData || new DenunciaData();
+        this.confirmacaoData = confirmacaoData || new ConfirmacaoData();
+        this.comentarioData = comentarioData || new ComentarioData();
+        this.usuarioData = usuarioData || new UsuarioData();
+    }
     // Estatísticas agregadas para dashboard
     public async pegarEstatisticas(): Promise<EstatisticasDenuncias> {
         const total = await this.denunciaData.contarTotalDenuncias();

@@ -1,10 +1,10 @@
 import { Response, Request, NextFunction } from "express";
-import { Usuariobusiness } from "../business/UsuarioBusiness";
+import { UsuarioBusiness } from "../business/UsuarioBusiness";
 
 
 
 export class UsuarioController {
-    userBusiness = new Usuariobusiness();
+    userBusiness = new UsuarioBusiness();
 
     register = async (req: Request, res: Response) => {
         try {
