@@ -50,4 +50,14 @@ export class TipoDenunciaData {
             throw new Error(error.sqlMessage || error.message);
         }
     }
+
+    async deletarTipoDenuncia(id: number): Promise<void> {
+        try {
+            await connection('tipo_denuncia')
+                .where({ id: id })
+                .delete()
+        } catch (error: any) {
+            throw new Error(error.sqlMessage || error.message);
+        }
+    }
 }

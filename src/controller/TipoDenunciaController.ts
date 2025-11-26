@@ -88,5 +88,26 @@ export class TipoDenunciaController {
             }
         }
     }
+
+    public deletarTipoDenuncia = async (req: Request, res: Response) => {
+        try {
+            const id = Number(req.params.id);
+
+            await this.tipoDenunciaBusiness.deletarTipoDenuncia(id);
+
+            res.status(200).send({ message: "Tipo de denúncia deletado com sucesso!" });
+
+        } catch (error: any) {
+            console.error("Erro no Controller (DeletarTipoDenuncia):", error.message);
+
+            if (error.message.includes("não encontrado")) {
+                return res.status(404).send({ message: error.message });
+            } else if (error.message.includes("ID inválido")) {
+                return res.status(400).send({ message: error.message });
+            } else {
+                return res.status(500).send({ message: "Erro interno ao deletar." });
+            }
+        }
+    }
 }
 

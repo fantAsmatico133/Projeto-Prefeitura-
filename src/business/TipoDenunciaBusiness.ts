@@ -84,5 +84,26 @@ export class TipoDenunciaBusiness{
         }
     }
 
+    async deletarTipoDenuncia(id: number): Promise<void> {
+        try {
+            if (isNaN(id)) {
+                throw new Error("ID inválido");
+            }
+            if (!id) {
+                throw new Error("ID do tipo denuncia e obrigatório para deletar");
+            }
+
+            const existe = await this.TipoDenunciaData.TiposDenunciaPorId(id);
+            if (!existe) {
+                throw new Error("Tipo de denúncia não encontrado");
+            }
+
+            await this.TipoDenunciaData.deletarTipoDenuncia(id);
+
+        } catch (error: any) {
+            throw new Error(error.message || "Erro ao deletar tipo de denúncia");
+        }
+    }
+
     
 }
